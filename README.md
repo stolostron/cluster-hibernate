@@ -63,7 +63,8 @@ spec:
   ```
 
 ### Subscribe your ACM hub from the CLI
-1. Edit `subscribe/Channel.yaml` and change `GIT_USERNAME` to your Git username or Organization
+1. Run once: `./configure.sh` to populate the branch and repository username or organization you forked. 
+  - Manual steps: Edit `subscribe/Channel.yaml` and change `GIT_USERNAME` to your Git username or Organization
 ```
 spec:
   type: Git
@@ -91,7 +92,7 @@ spec:
 ```
   - The time window is configured to be active for 10 minutes from Monday - Friday at 7:00PM. This means the clusters will be hibernating in the evenings and weekends.
   - 10 minutes is enough time for the subscription to apply the update to all the clusters defined in the `./Hibernating` or `./Running` directories, even if the action takes longer to complete.  `location` is the timezone the time window will respect.
-3. Change the branch in the `subscribe/Running.yaml` and `subscribe/Hibernating.yaml` subscriptions, if using a branch for each ACM hub
+3. Manual step (if you don't run `configure.sh` ): Change the branch in the `subscribe/Running.yaml` and `subscribe/Hibernating.yaml` subscriptions, if using a branch for each ACM hub
 ```
 apps.open-cluster-management.io/git-branch: my-cluster-name
 ```
