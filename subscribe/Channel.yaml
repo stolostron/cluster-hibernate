@@ -10,6 +10,6 @@ metadata:
   namespace: cluster-hibernation-resource-ns-0
 spec:
   type: Git
-  pathname: https://github.com/GIT_USERNAME/hive-hibernate.git
+  pathname: https://github.com/GIT_USERNAME/cluster-hibernate.git
   secretRef:
     name: git-authentication-0
