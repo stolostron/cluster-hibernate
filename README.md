@@ -9,7 +9,7 @@ By creating two subscriptions, each with a time window, clusters can be moved be
 1. Fork this repoistory to your local user or organization
 2. Create a Git Token or re-use a Git token if you make the forked repository private. The token needs enough permissions to read a private repository.
 3. Clone the repository to your development environment (Mac or Linux if you want to use a script to add clusters.
-4. Connection to your Advanced Cluster Management hub
+4. Connect to your Advanced Cluster Management hub
 5. Enable subscription-admin for the user who just connected, run `oc edit clusterrolebinding open-cluster-management:subscription-admin`.
 6. Add the following to the bottom of the clusterRoleBinding:
 ```
@@ -57,6 +57,7 @@ spec:
   - You can use the example yaml in `subscribe/git-secret.example`, making sure to encode the two values: `echo BASE64_GIT_USERNAME_OR_TOKEN | base64`
   - Make sure to rename the file `mv subscribe/git-secret.example subscribe\git-secret.yaml`
   - Uncomment the `#- git-secret.yaml` in the `subscribe/kustomization.yaml` file
+  - Edit the `subscribe/Channel.yaml` and uncomment the `secretRef` and `name`
   ```
   #secretRef:
   #  name: git-authentication-0
