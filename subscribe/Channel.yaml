@@ -1,0 +1,15 @@
+apiVersion: v1                      
+kind: Namespace
+metadata:
+  name: cluster-hibernation-resource-ns-0
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: cluster-hibernation-resource-0
+  namespace: cluster-hibernation-resource-ns-0
+spec:
+  type: Git
+  pathname: https://github.com/GIT_USERNAME/hive-hibernate.git
+  secretRef:
+    name: git-authentication-0

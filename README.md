@@ -97,7 +97,7 @@ apps.open-cluster-management.io/git-branch: my-cluster-name
 ```
 4. Apply the two subscriptions
 ```
-oc apply -k subscribe
+make subscribe
 ```
 5. The subscriptions will go into affect when the next time window is reached
 
@@ -123,3 +123,11 @@ oc apply -k subscribe
 17. Click `Save` to complete
 
 The system will then wait until the Hibernate or Running time windows are reached and the apply the new state to the clusters you defined in the directories. You can see the application in the Red Hat Advanced Cluster Management Application console
+
+## List of make commands
+```
+make subscribe
+make unsubscribe
+make edit-hibernate-time
+make edit-running-time
+```

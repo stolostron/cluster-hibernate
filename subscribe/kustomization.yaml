@@ -1,0 +1,6 @@
+resources:
+- Channel.yaml
+- Application.yaml
+- Hibernating.yaml
+- Running.yaml
+#- git-secret.yaml
