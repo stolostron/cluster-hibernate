@@ -1,0 +1,8 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: jh21-gcp
+  namespace: jh21-gcp
+spec:
+  powerState: Hibernating
