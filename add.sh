@@ -7,6 +7,13 @@ else
     SERVER_NAME=$1
 fi
 
+if [ ! -d ./Hibernating ]; then
+  mkdir -p Hibernating
+fi
+if [ ! -d ./Running ]; then
+  mkdir -p Running
+fi
+
 cat > /tmp/$SERVER_NAME.yaml <<EOF
 ---
 apiVersion: hive.openshift.io/v1

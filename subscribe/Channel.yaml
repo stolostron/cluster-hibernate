@@ -11,5 +11,5 @@ metadata:
 spec:
   type: Git
   pathname: https://github.com/GIT_USERNAME/cluster-hibernate.git
-  secretRef:
-    name: git-authentication-0
+  #secretRef:
+  #  name: git-authentication-0
