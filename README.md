@@ -6,11 +6,14 @@ windows with the subscriptions, one subscription can be used to hibernate cluste
 By creating two subscriptions, each with a time window, clusters can be moved between powerStates. This is done using the Advanced Cluster Management subscription merge capability.
 
 ## Getting setup
-1. Fork this repoistory to your local user or organization
-2. Create a Git Token or re-use a Git token if you make the forked repository private. The token needs enough permissions to read a private repository.
+1. Fork this repoistory to your local user or organization (forks for this repository are public)
 3. Clone the repository to your development environment (Mac or Linux if you want to use a script to add clusters.
 4. Connect to your Advanced Cluster Management hub
-5. Enable subscription-admin for the user who just connected, run `oc edit clusterrolebinding open-cluster-management:subscription-admin`.
+5. Enable subscription-admin for the user who just connected to the ACM hub.
+Command:
+```
+oc edit clusterrolebinding open-cluster-management:subscription-admin
+```
 6. Add the following to the bottom of the clusterRoleBinding:
 ```
 subjects:
@@ -19,15 +22,23 @@ subjects:
   name: kube:admin
 ```
   - If `subjects` already exists, just add the hash as a new element in the `subjects` array
+```
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: kube:admin
+```
 ## Adding managed clusters to hibernate
-1. If you will use this repository with more then one ACM hub, create a branch using the ACM hub's name
+1. If you will use this repository with more then one ACM hub, create a branch in your repository using the ACM hub's name
 2. Run the `./add.sh` script for each cluster name you want to hibernate.
-  - If ACM shows the cluster name as my-cluster01, and want it to hibernate, run the following command:
+  - If ACM shows the cluster name as my-cluster01, run the following command:
   ```
   ./add.sh my-cluster01
   ```
-  - This will create a file with the cluster name `my-cluster01.yaml` in this example, in the `./Running` and `./Hibernating` directories
-3. If you want to manually create these files, here are an example of each type:
+  - This will create a file with the cluster name `my-cluster01.yaml` in the `./Running` and `./Hibernating` directories
+3. Repeat step 2 for each cluster you wish to hibernate
+
+## Manually adding managed cluster to hibernate
+1. If you want to manually create these files, here are an example of each type:
 ```
 # File ./Hibernating/my-cluster-name.yaml
 ---
@@ -40,7 +51,7 @@ spec:
   powerState: Hibernating
 ```
 ```
-# File ./Hibernating/my-cluster-name.yaml
+# File ./Running/my-cluster-name.yaml
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
@@ -50,28 +61,38 @@ metadata:
 spec:
   powerState: Running
 ```
-4. Repeated steps 2 or 3 for each cluster you wish to hibernate as part of the same time window
+2. Repeat step 1 for each cluster you wish to hibernate
 
 ### Optional: Preparing the secret for a private repository
-1. If you forked a private repository, create the file `subscribe/git-secret.yaml` with your base64 encoded Git username and Git token.
-  - You can use the example yaml in `subscribe/git-secret.example`, making sure to encode the two values: `echo BASE64_GIT_USERNAME_OR_TOKEN | base64`
+1. Create a Git Token or re-use a Git token if you make the forked repository private. The token needs enough permissions to read a private repository.
+2. If you copied this repository to a private repository, create the file `subscribe/git-secret.yaml` with your base64 encoded Git username and Git token.
+  - You can use the example yaml in `subscribe/git-secret.example`, making sure to encode the two values (username & token) with `echo BASE64_GIT_USERNAME_OR_TOKEN | base64`
   - Make sure to rename the file `mv subscribe/git-secret.example subscribe\git-secret.yaml`
   - Uncomment the `#- git-secret.yaml` in the `subscribe/kustomization.yaml` file
-  - Edit the `subscribe/Channel.yaml` and uncomment the `secretRef` and `name`
+  - Uncomment the `secretRef` and `name` in the `subscribe/Channel.yaml` file
   ```
   #secretRef:
   #  name: git-authentication-0
   ```
 
-### Subscribe your ACM hub from the CLI
-1. Run once: `./configure.sh` to populate the branch and repository username or organization you forked. 
-  - Manual steps: Edit `subscribe/Channel.yaml` and change `GIT_USERNAME` to your Git username or Organization
+## Subscribe your ACM hub from the CLI
+1. Run `./configure.sh`(once) to populate the branch and repository URL. 
+
+2. OPTIONAL manual steps: (Instead of running `./configure.sh`)
+- Edit `subscribe/Channel.yaml` and change `GIT_USERNAME` to your Git username or Organization
+  ```
+  spec:
+    type: Git
+    pathname: https://github.com/GIT_USERNAME/hive-hibernate.git
+
+- Change the branch in the `subscribe/Running.yaml` and `subscribe/Hibernating.yaml` subscriptions. The default is `main`
 ```
-spec:
-  type: Git
-  pathname: https://github.com/GIT_USERNAME/hive-hibernate.git
+apps.open-cluster-management.io/git-branch: my-branch-name
 ```
-2. **OPTIONAL:** Edit the time windows in `subscribe/Hibernating.yaml` and `subscribe/Running.yaml`
+  ```
+
+### OPTIONAL: Changing the time window
+3. Edit the time windows in `subscribe/Hibernating.yaml` and `subscribe/Running.yaml`
 ```
 spec:
   channel: >-
@@ -93,15 +114,14 @@ spec:
 ```
   - The time window is configured to be active for 10 minutes from Monday - Friday at 7:00PM. This means the clusters will be hibernating in the evenings and weekends.
   - 10 minutes is enough time for the subscription to apply the update to all the clusters defined in the `./Hibernating` or `./Running` directories, even if the action takes longer to complete.  `location` is the timezone the time window will respect.
-3. Manual step (if you don't run `configure.sh` ): Change the branch in the `subscribe/Running.yaml` and `subscribe/Hibernating.yaml` subscriptions, if using a branch for each ACM hub
-```
-apps.open-cluster-management.io/git-branch: my-cluster-name
-```
+
+### Activate subscription
 4. Apply the two subscriptions
 ```
 make subscribe
 ```
 5. The subscriptions will go into affect when the next time window is reached
+
 
 ## Subscribe your ACM hub using the console
 1. Navigate to the Create Application console
