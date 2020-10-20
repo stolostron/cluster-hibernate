@@ -8,6 +8,7 @@ all::
 	@echo "make edit-hibernate-time"
 	@echo "make edit-running-time"
 	@echo "make clean"
+	@echo "make list"
 
 subscribe::
 	oc apply -k subscribe/
@@ -25,3 +26,6 @@ clean::
 	rm Hibernating/*.yaml
 	rm Running/*.yaml
 
+list::
+	echo $(MY_LIST)
+	$(eval for cluster in `ls Hibernating`; do echo $${cluster/.yaml/}; done)
