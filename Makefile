@@ -1,3 +1,5 @@
+YAML_LIST := $(shell ls Hibernating)
+
 all::
 	@echo "Enter a choice"
 	@echo "Commands:"
@@ -25,3 +27,6 @@ clean::
 	rm Hibernating/*.yaml
 	rm Running/*.yaml
 
+list::
+	echo $(MY_LIST)
+	$(eval for cluster in `ls Hibernating`; do echo $${cluster/.yaml/}; done)

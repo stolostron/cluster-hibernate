@@ -2,7 +2,7 @@
 apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
 metadata:
-  name: jnp46rc3
-  namespace: jnp46rc3
+  name: jh21-azure
+  namespace: jh21-azure
 spec:
-  powerState: Hibernating
+  powerState: Running
