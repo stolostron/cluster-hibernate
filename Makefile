@@ -1,5 +1,3 @@
-YAML_LIST := $(shell ls Hibernating)
-
 all::
 	@echo "Enter a choice"
 	@echo "Commands:"
@@ -10,6 +8,8 @@ all::
 	@echo "make edit-hibernate-time"
 	@echo "make edit-running-time"
 	@echo "make clean"
+	@echo "make list"
+	@echo "make add CNAME=<CLUSTER_NAME>
 
 subscribe::
 	oc apply -k subscribe/
