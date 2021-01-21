@@ -6,7 +6,7 @@ windows with the subscriptions, one subscription can be used to hibernate cluste
 By creating two subscriptions, each with a time window, clusters can be moved between powerStates. This is done using the Advanced Cluster Management subscription merge capability.
 
 ## Getting setup
-1. Fork this repoistory to your local user or organization (forks for this repository are public)
+1. Fork this repository to your local user or organization (forks for this repository are public)
 3. Clone the repository to your development environment (Mac or Linux if you want to use a script to add clusters.
 4. Connect to your Advanced Cluster Management hub
 5. Enable subscription-admin for the user who just connected to the ACM hub.
